@@ -28,6 +28,9 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::post('add-comment',[HomeController::class,'addComment']);
+Route::post('add-reply',[HomeController::class,'addReply']);
+
 Route::get('/redirect',[HomeController::class,'redirect']);
 Route::get('product-details/{id}',[HomeController::class,'productDetails']);
 Route::post('add-cart/{id}',[HomeController::class,'addCart']);
@@ -52,3 +55,9 @@ Route::post('update-product/{id}',[AdminController::class,'updateProduct']);
 
 Route::get('view-order',[AdminController::class,'viewOrder']);
 Route::get('deliver/{id}',[AdminController::class,'deliver']);
+
+
+Route::get('print-pdf/{id}',[AdminController::class,'printPdf']);
+
+
+Route::get('search',[AdminController::class,'searchData']);

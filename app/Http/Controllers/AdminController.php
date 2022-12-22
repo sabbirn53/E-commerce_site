@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\products;
 use App\Models\Order;
+use PDF;
 
 use Illuminate\Http\Request;
 
@@ -101,16 +102,37 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Product update successfully');
     }
 
-    public function viewOrder(){
+    public function viewOrder()
+    {
         $order = Order::all();
-        return view('Admin.viewOrder',compact('order'));
+        return view('Admin.viewOrder', compact('order'));
     }
 
-    public function deliver($id){
+    public function deliver($id)
+    {
         $order = Order::find($id);
         $order->delivary_status = "delivered";
         $order->payment_status = "paid";
         $order->save();
         return redirect()->back();
     }
+
+    public function printPdf($id)
+    {
+        
+        $order = Order::find($id);
+        $pdf= PDF::loadView('Admin.pdf',compact('order'));
+        return $pdf->download('order_details.pdf');
+    }
+
+    public function searchData(Request $r)
+    {
+       $searchText = $r->search;
+
+       $order = Order::where('name', 'LIKE', "%$searchText%")->orWhere('phone', 'LIKE', "%$searchText%")->orWhere('product_title', 'LIKE', "%$searchText%")->get();
+       return view('Admin.viewOrder', compact('order'));
+
+    }
+
+
 }

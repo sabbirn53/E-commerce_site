@@ -17,7 +17,15 @@
             <div class="content-wrapper">
                 <h2 class="text-4xl my-3 font-bold text-center text-indigo-400">All order</h2>
 
-                <table class="table table-dark text-white border border-white">
+                <div class="my-5 w-50 mx-auto">
+                    <form action="{{url('search')}}" method="get">
+                        @csrf
+                        <input type="text" class="text-black" name="search" placeholder="search something">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+
+                <table class="table w-11/12 table-dark text-white border border-white">
                     <tr class="bg-white text-black">
                         <th>Name</th>
                         <th>Email</th>
@@ -30,10 +38,11 @@
                         <th>Delivary status</th>
                         <th>Iamge</th>
                         <th>Action</th>
+                        <th>Print</th>
 
                     </tr>
 
-                    @foreach ($order as $o)
+                    @forelse ($order as $o)
                     <tr>
                         <td>{{ $o->name }}</td>
                         <td>{{ $o->email }}</td>
@@ -56,9 +65,22 @@
                             <p class="text-blue-400 font-bold text-lg">Delivered</p>
                             @endif
 
+
+                        </td>
+                        <td>
+
+                            <a class="btn btn-sm btn-danger" href="{{url('print-pdf',$o->id)}}">PDF</a>
                         </td>
                     </tr>
-                    @endforeach
+
+
+                    @empty
+
+                    <div>
+                        <p class="text-center my-5">No data Found</p>
+                    </div>
+
+                    @endforelse
                 </table>
             </div>
         </div>
